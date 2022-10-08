@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    build: ./mysql
+    container_name: db_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./mysql/sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+
+  wordpress:
+    build: ./wordpress
+    container_name: wordpress_container
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
