@@ -14,5 +14,5 @@ RUN wget https://ja.wordpress.org/latest-ja.tar.gz \
     && cp -ip /var/www/vhosts/onya-lab.site/public_html/wp-config-sample.php /var/www/vhosts/onya-lab.site/public_html/wp-config.php \
     && chown -R apache:apache /var/www/vhosts/onya-lab.site
 COPY ./wp-config.php /var/www/vhosts/onya-lab.site/public_html/wp-config.php
-EXPOSE 80
+EXPOSE 8080
 ENTRYPOINT ["/usr/sbin/httpd", "-DFOREGROUND"]
