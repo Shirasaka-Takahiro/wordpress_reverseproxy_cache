@@ -7,13 +7,13 @@ services:
     ports:
       - "80:80"
     networks:
-       - docker-network
+      - wordpress-network
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   db:
     build: ./mysql
-    container_name: db_container
+    container_name: "db_container"
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -23,11 +23,11 @@ services:
     ports:
       - "3306:3306"
     networks:
-       - docker-network
+       - wordpress-network
 
   wordpress:
     build: ./wordpress
-    container_name: wordpress_container
+    container_name: "wordpress_container"
     restart: always
     ports:
       - "8080:8080"
@@ -35,7 +35,7 @@ services:
       VIRTUAL_HOST: onya-lab.site
       VIRTUAL_PORT: "8080"
     networks:
-       - docker-network
+       - wordpress-network
     depends_on:
       - db
   
@@ -43,16 +43,17 @@ services:
     build: ./phpmyadmin
     container_name: "pma_container"
     restart: always
-    ports:
-      - "8081:8081"
     environment:
       VIRTUAL_HOST: pma.onya-lab.site
-      VIRTUAL_PORT: "8081"
+      PMA_ARBITRARY: 1
+      PMA_HOSTS: db
+      PMA_USER: wp_user
+      PMA_PASSWORD: Wordpress1!
     networks:
-       - docker-network
+       - wordpress-network
     depends_on:
       - db
   
 networks:
-  docker-network:
-    external: true
+  wordpress-network:
+    driver: bridge
