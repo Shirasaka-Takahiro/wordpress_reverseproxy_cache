@@ -49,6 +49,8 @@ services:
       PMA_HOSTS: db
       PMA_USER: wp_user
       PMA_PASSWORD: Wordpress1!
+    volumes:
+      - ./phpmyadmin/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
     networks:
        - wordpress-network
     depends_on:
